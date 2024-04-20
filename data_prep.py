@@ -1,8 +1,9 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
+import imblearn
 
-def prep_data(df):
+def prep_data(df, ada = False):
     #transform columns
     df.columns = df.columns.str.lower()
     df["dt_customer"] = pd.to_datetime(df["dt_customer"]).dt.year
@@ -41,5 +42,9 @@ def prep_data(df):
     scaler = StandardScaler()
     x_train[numeric_features] = scaler.fit_transform(x_train[numeric_features])
     x_test[numeric_features] = scaler.transform(x_test[numeric_features])
+
+    if ada:
+        ada = imblearn.over_sampling.ADASYN(random_state=2115)
+        x_train, y_train = ada.fit_resample(x_train, y_train)
 
     return x_train, y_train, x_test, y_test   
