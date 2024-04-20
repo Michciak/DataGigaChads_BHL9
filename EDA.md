@@ -77,4 +77,6 @@ Warto zwrócić uwagę na zmienne odnoszące się do liczby kupowanych towarów 
 
 ## 4. Obserwacje nietypowe
 
+Detekcja nietypowych obserwacji pozwala na zidentyfikowanie nieporządanych w zbiorze wartości, które mogą wynikać np. z błędu człowieka lub defektu maszyny. Odpowienia strategia ich rozpoznawania i obsługi jest niezbędna do zbudowania skutecznego modelu predykcyjnego.
+
 <img src="./images/odstajace.svg">
