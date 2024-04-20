@@ -39,9 +39,9 @@ def prep_data(df, ada = False):
     x_train, x_test, y_train, y_test = train_test_split(X,y, test_size=0.2, random_state=2115)
 
     #scaling
-    scaler = StandardScaler()
-    x_train[numeric_features] = scaler.fit_transform(x_train[numeric_features])
-    x_test[numeric_features] = scaler.transform(x_test[numeric_features])
+    #scaler = StandardScaler()
+    #x_train[numeric_features] = scaler.fit_transform(x_train[numeric_features])
+    #x_test[numeric_features] = scaler.transform(x_test[numeric_features])
 
     if ada:
         ada = imblearn.over_sampling.ADASYN(random_state=2115)
