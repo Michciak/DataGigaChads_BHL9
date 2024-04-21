@@ -80,3 +80,9 @@ Warto zwrócić uwagę na zmienne odnoszące się do liczby kupowanych towarów 
 Detekcja nietypowych obserwacji pozwala na zidentyfikowanie nieporządanych w zbiorze wartości, które mogą wynikać np. z błędu człowieka lub defektu maszyny. Odpowienia strategia ich rozpoznawania i obsługi jest niezbędna do zbudowania skutecznego modelu predykcyjnego.
 
 <img src="./images/odstajace.svg">
+
+Eksploracja zbioru skutkowała znalezieniem nietypowych obserwacji. W zmiennej `Year_Birth` znalezione zostały obserwacji znacznie odstające od reszty, które najprawdopodobniej wynikały z błędu człowieka, jako strategię obsługi tych obserwacji wybrano zastopienie ich medianą.
+
+Dla zmiennej `Martial_Status` występowały małoliczne klasy, które wynikały ze słabo przygotowanego stystemu kontrolującego wprowadzane przez użytkowników dane, jako strategię radzenia sobie z takimi obserwacjami przyjęto zastąpienie ich modą.
+
+Zmienna `Income` posiadała obserwacje z obserwacjami odstającymi, przyjęta strategia pokrywała się z tą zastosowaną przy zmiennej `Year_Birth`.
