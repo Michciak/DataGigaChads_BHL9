@@ -1,14 +1,24 @@
 # Profilowanie Kampanii Marketingowej z Wykorzystaniem Uczenia Maszynowego i Metod XAI
 
-## Opis
+## Opis projektu
 
 Projekt polega na wykorzystaniu modeli uczenia maszynowego do profilowania kampanii marketingowej, a następnie interpretacji tych modeli przy użyciu metod XAI (Explainable Artificial Intelligence). Głównym celem jest zrozumienie, jakie cechy mają największy wpływ na skuteczność kampanii marketingowej.
 
-W projekcie znajduje się:
+W projekcie znajdują się:
 
-- Skrypt do eksploracyjnej analizy danych (EDA) - [link](link_do_pliku)
-- Skrypt do procesu uczenia modeli - [link](link_do_pliku)
-- Webapp pozwalający wybrać liczbę najistotniejszych cech w celu uzyskania opisu grupy docelowej.
+- Skrypt do eksploracyjnej analizy danych (EDA) 
+- Skrypty do preprocessingu oraz procesu uczenia modeli
+- Skrypt do obsługi bazy danych
+- Skrypt do budowania explainerów oraz przeprowadzenia XAI
+- Zapisane modele w formacie `.pkl` będące wynikiem dostrajania 
+
+## Dane
+
+Dane wykorzystane w projekcie pochodzą z otwartego źródła na platformie Kaggle - [Marketing Campaign](https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign).
+
+Jest to rzeczywisty zbiór danych udostępniony przez brazylijską firmę `ifood`, która prowadzi platformę do zamawiania i dostarczania jedzenia online. Firma działa głównie w Brazylii i Kolumbii, posiadając ponad 80% udziału w rynku sektora dostaw żywności w Brazylii.
+
+Zbiór danych został udostępniony w celu opracowania rozwiązania, które mogłoby zwiększyć efektywność marketingową firmy.
 
 ## Dokumentacja
 
