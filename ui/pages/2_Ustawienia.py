@@ -98,7 +98,7 @@ file_up_col, file_push_col = st.columns([6,2])
 with file_up_col:
     loaded_csv = st.file_uploader('Wczytaj dane z pliku CSV', type='csv')
     if loaded_csv is not None:
-        st.session_state.new_df = pd.read_csv(loaded_csv)
+        st.session_state.new_df = pd.read_csv(loaded_csv, sep = ";")
         st.session_state.new_df_ready = True
         if st.session_state.model_loaded != "Wybierz model":
             st.session_state.fit_ready = True
