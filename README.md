@@ -53,7 +53,7 @@ W sekcji poniżej znajdują się screeny z wyglądem oraz funkcjonalnością apl
 ![Wybór modelu](images/wybor_klas.gif)
 
 #### Doszkalanie klasyfikatora
-![Uczenie](images/wybor_klas.gif)
+![Uczenie](images/uczenie.gif)
 
 #### Podsumowanie kampanii
 ![Sekcja podsumowania](images/kampanie.png)
