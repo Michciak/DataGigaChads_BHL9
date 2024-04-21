@@ -29,7 +29,8 @@ categories = [
         'AcceptedCmp2',
         'AcceptedCmp3',
         'AcceptedCmp4',
-        'AcceptedCmp5'
+        'AcceptedCmp5',
+        'Dt_Customer'
     ]
 
 if 'data' not in st.session_state:
@@ -137,7 +138,7 @@ st.header("Najbardziej wpływowe cechy")
 st.subheader("Na podstawie modelu AI")
 if 'mp' not in st.session_state:
     st.session_state.mp = xai.vip(exp)
-    exclude_values = ["_baseline_","_full_model_"]
+    exclude_values = ["_baseline_","_full_model_","ID","Z_Revenue"]
     st.session_state.mp = st.session_state.mp.query('variable not in @exclude_values')
 
 mp = st.session_state.mp.sort_values(by="dropout_loss", ascending=False).head(n=vips)
@@ -215,4 +216,24 @@ for i in tabs:
                 st.plotly_chart(make_pdp_cat_plot(st.session_state.pdp_cat,n),use_container_width=True)
             else:
                 st.plotly_chart(make_pdp_plot(st.session_state.pdp,n),use_container_width=True)
+    n=n+1
+
+
+def make_target(n):
+    if tabs_names[n] in categories:
+        df = st.session_state.pdp_cat[st.session_state.pdp_cat["_vname_"]==tabs_names[n]]
+        max_index = df['_yhat_'].idxmax()
+        cat = df.loc[max_index, '_x_']
+        return f"{tabs_names[n]} o wartości {cat}"
+    else:
+        df = st.session_state.pdp[st.session_state.pdp["_vname_"]==tabs_names[n]]
+        top_10 = df['_yhat_'].quantile(0.9)
+        top_10_df = df[df['_yhat_'] >= top_10]
+        note = f"{tabs_names[n]} z przedziału {round(min(top_10_df['_x_']),2)}-{max(top_10_df['_x_'])}"
+        return note
+
+st.header("Proponowana grupa docelowa:")
+n=0
+for i in range(vips):
+    st.write(make_target(n))
     n=n+1
