@@ -9,6 +9,17 @@ def build_exp():
     xgb = pkl.load(open("models/xgb.pkl", 'rb'))
 
     data = pd.read_csv("marketing_campaign.csv", sep = ";")
+    #data["Dt_Customer"] = pd.to_datetime(data["Dt_Customer"]).dt.year
+    
+    data["Income"] = data["Income"].fillna(data["Income"].median())
+
+    #data reliability check
+    #data = data.drop(columns=["ID", "Z_costcontact", "Z_Revenue"], axis=1)
+    data = data[data["Year_Birth"]>1930]
+    data = data[data["Income"]<200000]
+    martial_ac = ["Single","Together","Married","Divorced","Widow"]
+    data = data[data["Marital_Status"].isin(martial_ac)]
+
     X = data.drop("Response", axis=1)
     y = data["Response"]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 2115)
@@ -22,4 +33,8 @@ def vip(exp):
 
 def pdp(exp, vars):
     pdp = exp.model_profile(variables = vars)
+    return pdp.result
+
+def pdp_cat(exp,vars):
+    pdp = exp.model_profile(variable_type = "categorical", variables = vars)
     return pdp.result
