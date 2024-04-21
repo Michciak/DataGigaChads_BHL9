@@ -8,7 +8,7 @@ services:
     build: ./ui
     # wait for initialization of fastapi service before setting up
     depends_on:
-      - "api"
+      - "db"
     # map container port 5000 to port 8001 of machine
     ports:
       - "8001:5000"
@@ -16,15 +16,15 @@ services:
     networks:
       - my_network
 
-  ml:
-    # ml model microservice
-    build: ./ml
-    # map container port 5000 to port 7002 of machine
-    ports:
-      - "7002:5000"
-    # use local docker network
-    networks:
-      - my_network
+#  ml:
+#    # ml model microservice
+#    build: ./ml
+#    # map container port 5000 to port 7002 of machine
+#    ports:
+#      - "7002:5000"
+#    # use local docker network
+#    networks:
+#      - my_network
 
   db:
     # database microservice
@@ -49,19 +49,19 @@ services:
       retries: 3
       timeout: 5s
 
-  # fastapi connector microservice
-  api:
-    build: ./api
-    # wait for initialization of other services before setting up
-    depends_on:
-      - "db"
-      - "ml"
-    # map container port 5000 of container to port 7001 of machine
-    ports:
-      - "7001:5000"
-    # use local docker network
-    networks:
-      - my_network
+#  # fastapi connector microservice
+#  api:
+#    build: ./api
+#    # wait for initialization of other services before setting up
+#    depends_on:
+#      - "db"
+#      - "ml"
+#    # map container port 5000 of container to port 7001 of machine
+#    ports:
+#      - "7001:5000"
+#    # use local docker network
+#    networks:
+#      - my_network
 
 # define local docker network
 networks:
