@@ -101,13 +101,18 @@ else:
 
     c1,c2,c3,c4,c5 = st.columns(5)
     try:
-        Target = 'Response'
-        Predictors = [col for col in st.session_state.data.columns.to_list() if col != Target]
-        x_train, x_test, y_train, y_test = train_test_split(st.session_state.data[Predictors], st.session_state.data[Target])
+        if 'x_train' not in st.session_state:
+            Target = 'Response'
+            Predictors = [col for col in st.session_state.data.columns.to_list() if col != Target]
+            x_train, x_test, y_train, y_test = train_test_split(st.session_state.data[Predictors], st.session_state.data[Target], random_state=2115)
+            st.session_state.x_train = x_train
+            st.session_state.x_test = x_test
+            st.session_state.y_train = y_train
+            st.session_state.y_test = y_test
         with c2:
-            st.metric("#### Sukces poprzedniej kamapnii", f"{round(y_train.sum()/len(y_train)*100,2)}%")
+            st.metric("#### Sukces poprzedniej kamapnii", f"{round(st.session_state.y_train.sum()/len(st.session_state.y_train)*100,2)}%")
         with c4:
-            st.metric("#### Prognozowany sukces kamapnii", f"{round(xai.exp_pred(st.session_state.exp, x_test).sum()/len(x_test)*100,2)}%", delta=f"{round(xai.exp_pred(st.session_state.exp, x_test).sum()/len(x_test)*100,2)-round(y_train.sum()/len(y_train)*100,2)}%")
+            st.metric("#### Prognozowany sukces kamapnii", f"{round(xai.exp_pred(st.session_state.exp, st.session_state.x_test).sum()/len(st.session_state.x_test)*100,2)}%", delta=f"{round(round(xai.exp_pred(st.session_state.exp, st.session_state.x_test).sum()/len(st.session_state.x_test)*100,2)-round(st.session_state.y_train.sum()/len(st.session_state.y_train)*100,2),2)}%")
     except:
         pass
 
@@ -121,7 +126,7 @@ else:
     st.header("Najbardziej wpływowe cechy")
     st.subheader("Na podstawie modelu AI")
     if 'mp' not in st.session_state:
-        st.session_state.mp = xai.vip(exp)
+        st.session_state.mp = xai.vip(st.session_state.exp)
         exclude_values = ["_baseline_","_full_model_","ID","Z_Revenue"]
         st.session_state.mp = st.session_state.mp.query('variable not in @exclude_values')
 
