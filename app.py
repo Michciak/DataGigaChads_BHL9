@@ -143,6 +143,36 @@ if 'mp' not in st.session_state:
 
 mp = st.session_state.mp.sort_values(by="dropout_loss", ascending=False).head(n=vips)
 
+desc_dict = {
+'AcceptedCmp1':  'czy klient zaakceptował ofertę 1 kampanii',
+'AcceptedCmp2':  'czy klient zaakceptował ofertę 2 kampanii',
+'AcceptedCmp3':  'czy klient zaakceptował ofertę 3 kampanii',
+'AcceptedCmp4':  'czy klient zaakceptował ofertę 4 kampanii',
+'AcceptedCmp5':  'czy klient zaakceptował ofertę 5 kampanii',
+'Response': 'czy klient zaakceptował ofertę ostatniej kampanii',
+'Complain': 'czy klient składał skargę w przeciągu dwóch ostanich lat',
+'Dt_Customer': 'data założenia konta',
+'Education': 'poziom edukacji klienta',
+'Marital_Status': 'stan cywilny klienta',
+'Kidhome': 'liczba małych dzieci zamieszkałcyh z klientem',
+'Teenhome': 'liczba nastolatków zaamieszkałych z klientem',
+'Income': 'roczny dochód gospodarstwa klienta',
+'MntFishProducts': 'wydatki na produkty rybne w przeciągu ostatnich dwóch lat',
+'MntMeatProducts': 'wydatki na produkty mięsne w przeciągu ostatnich dwóch lat',
+'MntFruits': 'wydatki na owoce w przeciągu ostatnich dwóch lat',
+'MntSweetProducts': 'wydatki na słodycze w przeciągu ostatnich dwóch lat',
+'MntWines': 'wydatki na wino w przeciągu ostatnich dwóch lat',
+'MntGoldProds': 'wydatki na wyroby ze złota w przeciągu ostatnich dwóch lat',
+'NumDelasPurchases': 'liczba zakupów ze zniżką',
+'NumCatalogPurchases': 'liczba zakupów z wykorzystaniem katalogu',
+'NumStorePurchases': 'liczba zakupów wykonanych bezpośrednio w sklepie',
+'NumWebPurchases': 'liczba zakupów dokonoanych przez stronę internetową',
+'NumWebVisitsMonth': 'liczba wizyt na stronie internetowej w przeciągu ostatniego miesiąca',
+'Recency': 'liczba dni od ostaniego zakupu',
+'Z_CostContact': '?',
+'Year_Birth': 'rok urodzenia klienta',
+}
+
 fig = go.Figure()
 
 fig.add_trace(go.Bar(

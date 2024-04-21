@@ -58,6 +58,8 @@ Poznanie zmiennych jest pierwszym i najważniejszym etapem w *Eksploracyjnej Ana
 
 `Recency`*[int]* - liczba dni od ostaniego zakupu.
 
+`Year_Birth`*[int]* - rok urodzenia klienta.
+
 ## 2. Wizualizacja rozkładów 
 
 Wizualizacja rozkładów wartości zmiennych pozwala na szybkie i intuicyjne zrozumienie struktury danych. Umożliwia identyfikację trendów, anomalii i wzorców występująych w danych, które mogą nie być oczywiste.
