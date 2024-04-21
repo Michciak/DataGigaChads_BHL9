@@ -23,6 +23,30 @@ class YearFromDtTransformer(BaseEstimator, TransformerMixin):
         # Assuming X is a DataFrame and "Dt_Customer" is one of its columns
         year_column = X["Dt_Customer"].str[:4].astype(int)
         return year_column.values.reshape(-1, 1)
+    
+class RemoveDumbYearBirth(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+
+    def fit(self, X, y=None):
+        self.median_year_birth = X["Year_Birth"].median().astype(int)
+        return self
+    
+    def transform(self, X):
+        X.loc[X["Year_Birth"]<1930, "Year_Birth"] = self.median_year_birth
+        return X["Year_Birth"].values.reshape(-1, 1)
+    
+class RemoveDumbIncome(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+
+    def fit(self, X, y=None):
+        self.median_income = X["Income"].median().astype(int)
+        return self
+    
+    def transform(self, X):
+        X.loc[X["Income"]>200000, "Income"] = self.median_income
+        return X["Income"].values.reshape(-1, 1)
 
 st.title("Wykorzystywany model")
 
