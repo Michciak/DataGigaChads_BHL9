@@ -42,18 +42,27 @@ Zawiera ona następujące funkcjonalności:
 - Intuicyjnie zaznaczone obszary na wykresie przedstawiające obszary największego zainteresowania
 - Słowny opis zawierający informacje o grupie docelowej
 
-### Screenshots/Video
+### Prezentacja aplikacji
 
 W sekcji poniżej znajdują się screeny z wyglądem oraz funkcjonalnością aplikacji.
 
-#### Screenshot 1
-![Screenshot 1](screenshots/screenshot1.png)
+#### Strona tytułowa/Wprowadzenie
+![Wprowadzenie](images/wprowadzenie.png)
 
-#### Screenshot 2
-![Screenshot 2](screenshots/screenshot2.png)
+#### Wybór modelu
+![Wybór modelu](images/wybor_klas.gif)
 
-#### Video
-[Link do wideo](link_do_wideo)
+#### Doszkalanie klasyfikatora
+![Uczenie](images/wybor_klas.gif)
+
+#### Podsumowanie kampanii
+![Sekcja podsumowania](images/kampanie.png)
+
+#### Wykres ważności cech
+![Ważność](images/vip.gif)
+
+#### Analiza wykresów
+![Wykresy](images/pdp.gif)
 
 ## Plany rozwoju na przyszłość
 

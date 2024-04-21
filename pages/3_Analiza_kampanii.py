@@ -161,9 +161,9 @@ else:
     ))
 
     fig.update_layout(
-        title='Bar Plot',
-        xaxis=dict(title='Values'),
-        yaxis=dict(title='Labels')
+        title='Wykres ważności zmiennych',
+        xaxis=dict(title='Cechy'),
+        yaxis=dict(title='Ważność')
     )
 
     st.plotly_chart(fig,use_container_width=True)
@@ -210,8 +210,8 @@ else:
 
             fig.update_layout(
                 title='Bar Plot',
-                xaxis=dict(title='Values'),
-                yaxis=dict(title='Labels')
+                xaxis=dict(title='Wartość'),
+                yaxis=dict(title='Prawdopodobieństwo')
             )
 
             return fig
