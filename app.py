@@ -3,6 +3,7 @@ import xai as xai
 import plotly.graph_objects as go
 import plotly.express as px
 from sklearn.base import BaseEstimator, TransformerMixin
+import pandas as pd
 
 class YearFromDtTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -30,6 +31,8 @@ categories = [
         'AcceptedCmp5'
     ]
 
+data = pd.read_csv("marketing_campaign.csv", sep = ";")
+
 st.set_page_config(page_title="Sentiment Analysis", layout="wide")
 st.markdown("""
 <style>
@@ -45,6 +48,22 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+st.markdown(
+    """
+<style>
+[data-testid="stMetricValue"] {
+    font-size: 48px;
+}
+[data-testid="stMetricLabel"] {
+    font-size: 100px;
+}
+[data-testid="stMetricDelta"] {
+    font-size: 26px;
+}
+</style>
+""",
+    unsafe_allow_html=True,
+)
 
 st.title("Analiza kampanii marketingowej")
 st.header("W oparciu o profilowanie klienta")
@@ -54,23 +73,23 @@ st.header("W oparciu o profilowanie klienta")
 
 c1,c2,c3,c4,c5 = st.columns(5)
 with c1:
-    st.metric("Sukces kampanii nr 1", 1, delta=1)
+    st.metric(f"#### Sukces kampanii nr 1", f"{round(data['AcceptedCmp1'].sum()/len(data)*100,2)}%")
 with c2:
-    st.metric("Sukces kampanii nr 2", 2, delta=-11)
+    st.metric("#### Sukces kampanii nr 2", f"{round(data['AcceptedCmp2'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp2'].sum()/len(data)*100,2)-round(data['AcceptedCmp1'].sum()/len(data)*100,2),2)}%")
 with c3:
-    st.metric("Sukces kampanii nr 3", 3, delta=22)
+    st.metric("#### Sukces kampanii nr 3", f"{round(data['AcceptedCmp3'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp3'].sum()/len(data)*100,2)-round(data['AcceptedCmp2'].sum()/len(data)*100,2),2)}%")
 with c4:
-    st.metric("Sukces kampanii nr 4", 4, delta=11)
+    st.metric("#### Sukces kampanii nr 4", f"{round(data['AcceptedCmp4'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp4'].sum()/len(data)*100,2)-round(data['AcceptedCmp3'].sum()/len(data)*100,2),2)}%")
 with c5:
-    st.metric("Sukces kampanii nr 5", 5, delta=16)
+    st.metric("#### Sukces kampanii nr 5", f"{round(data['AcceptedCmp5'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp5'].sum()/len(data)*100,2)-round(data['AcceptedCmp4'].sum()/len(data)*100,2),2)}%")
 
 st.divider()
 
 c1,c2,c3,c4,c5 = st.columns(5)
 with c2:
-    st.metric("Sukces poprzedniej kamapnii", 100, delta=1000)
+    st.metric("#### Sukces poprzedniej kamapnii", f"{round(data['Response'].sum()/len(data)*100,2)}%")
 with c4:
-    st.metric("Prognozowany sukces kamapnii", 100, delta=1000)
+    st.metric("#### Prognozowany sukces kamapnii", 100, delta=1000)
 
 st.divider()
 
