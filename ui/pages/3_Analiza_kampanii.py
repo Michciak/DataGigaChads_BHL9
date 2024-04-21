@@ -4,9 +4,10 @@ import plotly.graph_objects as go
 import plotly.express as px
 from db_handler import *
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.model_selection import train_test_split
 import pandas as pd
 
-st.set_page_config(page_title="Sentiment Analysis", layout="wide")
+st.set_page_config(page_title="Profiler klientów", layout="wide")
 
 class YearFromDtTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -100,10 +101,13 @@ else:
 
     c1,c2,c3,c4,c5 = st.columns(5)
     try:
+        Target = 'Response'
+        Predictors = [col for col in st.session_state.data.columns.to_list() if col != Target]
+        x_train, x_test, y_train, y_test = train_test_split(st.session_state.data[Predictors], st.session_state.data[Target])
         with c2:
-            st.metric("#### Sukces poprzedniej kamapnii", f"{round(st.session_state.data['Response'].sum()/len(st.session_state.data)*100,2)}%")
+            st.metric("#### Sukces poprzedniej kamapnii", f"{round(y_train.sum()/len(y_train)*100,2)}%")
         with c4:
-            st.metric("#### Prognozowany sukces kamapnii", 100, delta=1000)
+            st.metric("#### Prognozowany sukces kamapnii", f"{round(xai.exp_pred(st.session_state.exp, x_test).sum()/len(x_test)*100,2)}%", delta=1000)
     except:
         pass
 

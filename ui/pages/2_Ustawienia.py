@@ -10,7 +10,7 @@ import pandas as pd
 # if 'data' not in st.session_state:
 #     st.session_state.data = pd.read_csv("marketing_campaign.csv", sep = ";")
 
-st.set_page_config(page_title="Sentiment Analysis", layout="wide")
+st.set_page_config(page_title="Profiler klientów", layout="wide")
 
 class YearFromDtTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):
