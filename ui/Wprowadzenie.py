@@ -8,8 +8,21 @@ import pandas as pd
 
 st.set_page_config(page_title="Profiler klientów", layout="wide")
 
-st.markdown("""W twoich dłoniach znalazło się potężne narzędzie. Pozwoli ci ono przewidzieć skuteczność twojej następnej kampanii marketingowej oraz zrozumieć co miało największy wpływ na wyniki twojej poprzedniej kampanii. 
-            Pamiętaj proszę, że to narzędzie ma cię wesprzeć w podejmowaniu decyzji, a nie zastąpić.""")
+c1,c2,c3 = st.columns([1,1,1])
+with c2:
+    st.title("PROFILER KLIENTÓW")
+    st.divider()
+c1,c2,c3 = st.columns([1,1,1])
+with c2:
+    st.header("W twoich dłoniach znalazło się potężne narzędzie.")
+    st.divider()
+c1,c2,c3 = st.columns([1,1,1])
+with c2:
+    st.header("Pozwoli ci ono przewidzieć skuteczność twojej następnej kampanii marketingowej oraz zrozumieć co miało największy wpływ na wyniki twojej poprzedniej kampanii.")
+    st.divider()
+c1,c2,c3 = st.columns([1,1,1])
+with c2:
+    st.header("Pamiętaj proszę, że to narzędzie ma cię wesprzeć w podejmowaniu decyzji, a nie zastąpić!")
 
 with st.spinner("Inicjalizowanie aplikacji..."):
     pass

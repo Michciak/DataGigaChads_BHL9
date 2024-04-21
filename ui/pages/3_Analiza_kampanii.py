@@ -107,7 +107,7 @@ else:
         with c2:
             st.metric("#### Sukces poprzedniej kamapnii", f"{round(y_train.sum()/len(y_train)*100,2)}%")
         with c4:
-            st.metric("#### Prognozowany sukces kamapnii", f"{round(xai.exp_pred(st.session_state.exp, x_test).sum()/len(x_test)*100,2)}%", delta=1000)
+            st.metric("#### Prognozowany sukces kamapnii", f"{round(xai.exp_pred(st.session_state.exp, x_test).sum()/len(x_test)*100,2)}%", delta=f"{round(xai.exp_pred(st.session_state.exp, x_test).sum()/len(x_test)*100,2)-round(y_train.sum()/len(y_train)*100,2)}%")
     except:
         pass
 
