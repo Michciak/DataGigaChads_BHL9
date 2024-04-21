@@ -18,12 +18,39 @@ class YearFromDtTransformer(BaseEstimator, TransformerMixin):
 
 exp = xai.build_exp()
 
+categories = [
+        'Education',
+        'Marital_Status',
+        'KidHome',
+        'TeenHome',
+        'AcceptedCmp1',
+        'AcceptedCmp2',
+        'AcceptedCmp3',
+        'AcceptedCmp4',
+        'AcceptedCmp5'
+    ]
+
 st.set_page_config(page_title="Sentiment Analysis", layout="wide")
+st.markdown("""
+<style>
+.big-font {
+    font-size:62px !important;
+    font-weight: bold;
+    line-height: 0.45;
+}
+</style>
+<style>
+    .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
+    font-size:2rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 st.title("Analiza kampanii marketingowej")
 st.header("W oparciu o profilowanie klienta")
 
-with st.sidebar:
-    st.header("XD")
+# with st.sidebar:
+#     st.header("XD")
 
 c1,c2,c3,c4,c5 = st.columns(5)
 with c1:
@@ -49,23 +76,19 @@ st.divider()
 
 st.title("Analiza profilu klienta")
 
-st.header("Najbardziej wpływowe cechy")
-st.subheader("Na podstaiwe modelu AI")
-mp = xai.vip(exp)
-exclude_values = ["_baseline_","_full_model_"]
-mp = mp.query('variable not in @exclude_values')
+st.write("Wybierz jaką liczbę cech chcesz uwzględnić:")
+vips = st.slider("Liczba cech klienta",1,10,value=5)
 
-mp = mp.sort_values(by="dropout_loss", ascending=False).head(n=5)
+st.header("Najbardziej wpływowe cechy")
+st.subheader("Na podstawie modelu AI")
+if 'mp' not in st.session_state:
+    st.session_state.mp = xai.vip(exp)
+    exclude_values = ["_baseline_","_full_model_"]
+    st.session_state.mp = st.session_state.mp.query('variable not in @exclude_values')
+
+mp = st.session_state.mp.sort_values(by="dropout_loss", ascending=False).head(n=vips)
 
 fig = go.Figure()
-
-#mp = mp.sort_values(by="dropout_loss", ascending=True)
-
-# fig.add_trace(go.Bar(
-#     x=mp['dropout_loss'],
-#     y=mp['variable'],
-#     orientation='h'
-# ))
 
 fig.add_trace(go.Bar(
     y=mp['dropout_loss'],
@@ -80,8 +103,11 @@ fig.update_layout(
 
 st.plotly_chart(fig,use_container_width=True)
 
-tabs_names = list(mp["variable"].head(5))
-pdp = xai.pdp(exp,tabs_names)
+tabs_names = list(mp["variable"].head(vips))
+
+if 'pdp' not in st.session_state:
+    st.session_state.pdp = xai.pdp(exp,list(st.session_state.mp["variable"]))
+    st.session_state.pdp_cat = xai.pdp_cat(exp,list(st.session_state.mp["variable"]))
 
 def make_pdp_plot(pdp_val, i):
     df = pdp_val[pdp_val["_vname_"]==tabs_names[i]]
@@ -105,24 +131,34 @@ def make_pdp_plot(pdp_val, i):
 
     return fig
 
-t1,t2,t3,t4,t5 = st.tabs(tabs_names)
-with t1:
-    c1,c2,c3 = st.columns([1,5,1])
-    with c2:
-        st.plotly_chart(make_pdp_plot(pdp,0),use_container_width=True)
-with t2:
-    c1,c2,c3 = st.columns([1,5,1])
-    with c2:
-        st.plotly_chart(make_pdp_plot(pdp,1),use_container_width=True)
-with t3:
-    c1,c2,c3 = st.columns([1,5,1])
-    with c2:
-        st.plotly_chart(make_pdp_plot(pdp,2),use_container_width=True)
-with t4:
-    c1,c2,c3 = st.columns([1,5,1])
-    with c2:
-        st.plotly_chart(make_pdp_plot(pdp,3),use_container_width=True)
-with t5:
-    c1,c2,c3 = st.columns([1,5,1])
-    with c2:
-        st.plotly_chart(make_pdp_plot(pdp,4),use_container_width=True)
+def make_pdp_cat_plot(pdp_val, i):
+    df = pdp_val[pdp_val["_vname_"]==tabs_names[i]]
+    df = df.sort_values(by="_yhat_", ascending = False)
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        y=df['_yhat_'],
+        x=df['_x_']
+    ))
+
+    fig.update_layout(
+        title='Bar Plot',
+        xaxis=dict(title='Values'),
+        yaxis=dict(title='Labels')
+    )
+
+    return fig
+
+tabs = st.tabs(tabs_names)
+
+n = 0
+for i in tabs:
+    with i:
+        c1,c2,c3 = st.columns([1,5,1])
+        with c2:
+            if tabs_names[n] in categories:
+                st.plotly_chart(make_pdp_cat_plot(st.session_state.pdp_cat,n),use_container_width=True)
+            else:
+                st.plotly_chart(make_pdp_plot(st.session_state.pdp,n),use_container_width=True)
+    n=n+1
