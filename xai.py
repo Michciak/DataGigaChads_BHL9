@@ -4,9 +4,9 @@ import data_prep
 import pandas as pd
 from sklearn.model_selection import train_test_split
     
-def build_exp():
+def build_exp(model_name: str):
 
-    xgb = pkl.load(open("models/xgb.pkl", 'rb'))
+    xgb = pkl.load(open(model_name, 'rb'))
 
     data = pd.read_csv("marketing_campaign.csv", sep = ";")
     #data["Dt_Customer"] = pd.to_datetime(data["Dt_Customer"]).dt.year

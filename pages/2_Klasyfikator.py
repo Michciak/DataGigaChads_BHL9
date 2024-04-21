@@ -1,10 +1,16 @@
 import streamlit as st
 import xai as xai
+import pickle as pkl
 import plotly.graph_objects as go
 import plotly.express as px
 from db_handler import *
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
+
+# if 'data' not in st.session_state:
+#     st.session_state.data = pd.read_csv("marketing_campaign.csv", sep = ";")
+
+st.set_page_config(page_title="Sentiment Analysis", layout="wide")
 
 class YearFromDtTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -18,25 +24,25 @@ class YearFromDtTransformer(BaseEstimator, TransformerMixin):
         year_column = X["Dt_Customer"].str[:4].astype(int)
         return year_column.values.reshape(-1, 1)
 
-exp = xai.build_exp()
+st.title("Wykorzystywany model")
 
-categories = [
-        'Education',
-        'Marital_Status',
-        'KidHome',
-        'TeenHome',
-        'AcceptedCmp1',
-        'AcceptedCmp2',
-        'AcceptedCmp3',
-        'AcceptedCmp4',
-        'AcceptedCmp5'
-    ]
+if 'model_name' not in st.session_state:
+    st.session_state.model_name = ''
 
-if 'data' not in st.session_state:
-    st.session_state.data = pd.read_csv("marketing_campaign.csv", sep = ";")
+st.session_state.model_name = st.selectbox("Model klasyfikatora", ["XGBoost", "Regresja liniowa"])
+if st.session_state.model_name == 'XGBoost':
+    with st.spinner('Inicjalizowanie klasyfikatora...'):
+        st.session_state.exp = xai.build_exp("models/xgb.pkl")
+        st.session_state.mp = xai.vip(st.session_state.exp)
+        exclude_values = ["_baseline_", "_full_model_", "ID", "Z_Revenue"]
+        st.session_state.mp = st.session_state.mp.query('variable not in @exclude_values')
 
-st.set_page_config(page_title="Sentiment Analysis", layout="wide")
+elif st.session_state.model_name == 'Regresja liniowa':
+    with st.spinner('Inicjalizowanie klasyfikatora...'):
+        st.session_state.exp = xai.build_exp("models/lr.pkl")
+        st.session_state.mp = xai.vip(st.session_state.exp)
+        exclude_values = ["_baseline_", "_full_model_", "ID", "Z_Revenue"]
+        st.session_state.mp = st.session_state.mp.query('variable not in @exclude_values')
 
-st.title("Informacje o wykorzystywanym modelu")
 
 st.write(st.session_state.mp)

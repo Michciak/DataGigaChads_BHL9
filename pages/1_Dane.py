@@ -6,23 +6,25 @@ from db_handler import *
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
 
-if 'db_b' not in st.session_state:
-    st.session_state.db_b = False
+st.set_page_config(page_title="Sentiment Analysis", layout="wide")
 
-if 'new_df' not in st.session_state:
-    st.session_state.new_df = None
-    st.session_state.new_df_ready = False
+# if 'db_b' not in st.session_state:
+#     st.session_state.db_b = False
+
+# if 'new_df' not in st.session_state:
+#     st.session_state.new_df = None
+#     st.session_state.new_df_ready = False
 
 # col_db, input_col = st.columns([10,2])
 # with input_col:
-    st.markdown("""
-                    <style>
-                    button {
-                        height: auto;
-                        padding-top: 10px !important;
-                        padding-bottom: 10px !important;
-                    }</style>""", unsafe_allow_html=True, )
-    db_button = st.button('Manage Data', use_container_width=True)
+st.markdown("""
+                <style>
+                button {
+                    height: auto;
+                    padding-top: 10px !important;
+                    padding-bottom: 10px !important;
+                }</style>""", unsafe_allow_html=True, )
+    # db_button = st.button('Manage Data', use_container_width=True)
     # if db_button:
     #     st.session_state.db_b = not st.session_state.db_b
 
