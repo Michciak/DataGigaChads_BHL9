@@ -2,6 +2,7 @@ import streamlit as st
 import xai as xai
 import plotly.graph_objects as go
 import plotly.express as px
+from db_handler import *
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
 
@@ -31,7 +32,8 @@ categories = [
         'AcceptedCmp5'
     ]
 
-data = pd.read_csv("marketing_campaign.csv", sep = ";")
+if 'data' not in st.session_state:
+    st.session_state.data = pd.read_csv("marketing_campaign.csv", sep = ";")
 
 st.set_page_config(page_title="Sentiment Analysis", layout="wide")
 st.markdown("""
@@ -71,23 +73,56 @@ st.header("W oparciu o profilowanie klienta")
 # with st.sidebar:
 #     st.header("XD")
 
+if 'db_b' not in st.session_state:
+    st.session_state.db_b = False
+
+if 'new_df' not in st.session_state:
+    st.session_state.new_df = None
+    st.session_state.new_df_ready = False
+
+col_db, input_col = st.columns([10,2])
+with input_col:
+    st.markdown("""
+                    <style>
+                    button {
+                        height: auto;
+                        padding-top: 10px !important;
+                        padding-bottom: 10px !important;
+                    }</style>""", unsafe_allow_html=True, )
+    db_button = st.button('Manage Data', use_container_width=True)
+    if db_button:
+        st.session_state.db_b = not st.session_state.db_b
+
+if st.session_state.db_b:
+    with col_db:
+        file_up_col, file_push_col = st.columns([7,2])
+        with file_up_col:
+            loaded_csv = st.file_uploader('Upload .csv file', type='csv')
+            if loaded_csv is not None:
+                st.session_state.new_df = pd.read_csv(loaded_csv)
+                st.session_state.new_df_ready = True
+        with file_push_col:
+            st.write('')
+            st.button('Push file to database', on_click=push_to_db, use_container_width=True, args=(st.session_state.new_df,), disabled=not st.session_state.new_df_ready)
+            st.session_state.data = st.button('Load file from database', on_click=pull_from_db, use_container_width=True)
+
 c1,c2,c3,c4,c5 = st.columns(5)
 with c1:
-    st.metric(f"#### Sukces kampanii nr 1", f"{round(data['AcceptedCmp1'].sum()/len(data)*100,2)}%")
+    st.metric(f"#### Sukces kampanii nr 1", f"{round(st.session_state.data['AcceptedCmp1'].sum()/len(st.session_state.data)*100,2)}%")
 with c2:
-    st.metric("#### Sukces kampanii nr 2", f"{round(data['AcceptedCmp2'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp2'].sum()/len(data)*100,2)-round(data['AcceptedCmp1'].sum()/len(data)*100,2),2)}%")
+    st.metric("#### Sukces kampanii nr 2", f"{round(st.session_state.data['AcceptedCmp2'].sum()/len(st.session_state.data)*100,2)}%", delta=f"{round(round(st.session_state.data['AcceptedCmp2'].sum()/len(st.session_state.data)*100,2)-round(st.session_state.data['AcceptedCmp1'].sum()/len(st.session_state.data)*100,2),2)}%")
 with c3:
-    st.metric("#### Sukces kampanii nr 3", f"{round(data['AcceptedCmp3'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp3'].sum()/len(data)*100,2)-round(data['AcceptedCmp2'].sum()/len(data)*100,2),2)}%")
+    st.metric("#### Sukces kampanii nr 3", f"{round(st.session_state.data['AcceptedCmp3'].sum()/len(st.session_state.data)*100,2)}%", delta=f"{round(round(st.session_state.data['AcceptedCmp3'].sum()/len(st.session_state.data)*100,2)-round(st.session_state.data['AcceptedCmp2'].sum()/len(st.session_state.data)*100,2),2)}%")
 with c4:
-    st.metric("#### Sukces kampanii nr 4", f"{round(data['AcceptedCmp4'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp4'].sum()/len(data)*100,2)-round(data['AcceptedCmp3'].sum()/len(data)*100,2),2)}%")
+    st.metric("#### Sukces kampanii nr 4", f"{round(st.session_state.data['AcceptedCmp4'].sum()/len(st.session_state.data)*100,2)}%", delta=f"{round(round(st.session_state.data['AcceptedCmp4'].sum()/len(st.session_state.data)*100,2)-round(st.session_state.data['AcceptedCmp3'].sum()/len(st.session_state.data)*100,2),2)}%")
 with c5:
-    st.metric("#### Sukces kampanii nr 5", f"{round(data['AcceptedCmp5'].sum()/len(data)*100,2)}%", delta=f"{round(round(data['AcceptedCmp5'].sum()/len(data)*100,2)-round(data['AcceptedCmp4'].sum()/len(data)*100,2),2)}%")
+    st.metric("#### Sukces kampanii nr 5", f"{round(st.session_state.data['AcceptedCmp5'].sum()/len(st.session_state.data)*100,2)}%", delta=f"{round(round(st.session_state.data['AcceptedCmp5'].sum()/len(st.session_state.data)*100,2)-round(st.session_state.data['AcceptedCmp4'].sum()/len(st.session_state.data)*100,2),2)}%")
 
 st.divider()
 
 c1,c2,c3,c4,c5 = st.columns(5)
 with c2:
-    st.metric("#### Sukces poprzedniej kamapnii", f"{round(data['Response'].sum()/len(data)*100,2)}%")
+    st.metric("#### Sukces poprzedniej kamapnii", f"{round(st.session_state.data['Response'].sum()/len(st.session_state.data)*100,2)}%")
 with c4:
     st.metric("#### Prognozowany sukces kamapnii", 100, delta=1000)
 
