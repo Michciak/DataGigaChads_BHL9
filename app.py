@@ -254,12 +254,12 @@ def make_target(n):
         df = st.session_state.pdp_cat[st.session_state.pdp_cat["_vname_"]==tabs_names[n]]
         max_index = df['_yhat_'].idxmax()
         cat = df.loc[max_index, '_x_']
-        return f"{tabs_names[n]} o wartości {cat}"
+        return f"{desc_dict.get(tabs_names[n])} o wartości {cat}"
     else:
         df = st.session_state.pdp[st.session_state.pdp["_vname_"]==tabs_names[n]]
         top_10 = df['_yhat_'].quantile(0.9)
         top_10_df = df[df['_yhat_'] >= top_10]
-        note = f"{tabs_names[n]} z przedziału {round(min(top_10_df['_x_']),2)}-{max(top_10_df['_x_'])}"
+        note = f"{desc_dict.get(tabs_names[n])} z przedziału {round(min(top_10_df['_x_']),2)}-{max(top_10_df['_x_'])}"
         return note
 
 st.header("Proponowana grupa docelowa:")
