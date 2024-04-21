@@ -20,8 +20,10 @@ class YearFromDtTransformer(BaseEstimator, TransformerMixin):
         year_column = X["Dt_Customer"].str[:4].astype(int)
         return year_column.values.reshape(-1, 1)
 #
-if st.session_state.exp is not None:
-#
+
+if 'pdp_cat' not in st.session_state:
+    st.markdown("## Najpierw wybierz model w zakładce `Ustawienia`")
+else:
     categories = [
             'Education',
             'Marital_Status',
@@ -168,9 +170,9 @@ if st.session_state.exp is not None:
 
     tabs_names = list(mp["variable"].head(vips))
 
-    if 'pdp' not in st.session_state:
-        st.session_state.pdp = xai.pdp(st.session_state.exp,list(st.session_state.mp["variable"]))
-        st.session_state.pdp_cat = xai.pdp_cat(st.session_state.exp,list(st.session_state.mp["variable"]))
+    # if 'pdp' not in st.session_state:
+    #     st.session_state.pdp = xai.pdp(st.session_state.exp,list(st.session_state.mp["variable"]))
+    #     st.session_state.pdp_cat = xai.pdp_cat(st.session_state.exp,list(st.session_state.mp["variable"]))
 
     with st.spinner("Generowanie wyników analizy..."):
         def make_pdp_plot(pdp_val, i):
@@ -246,6 +248,3 @@ if st.session_state.exp is not None:
         for i in range(vips):
             st.write(make_target(n))
             n=n+1
-
-else:
-    st.markdown("## Najpierw wybierz model w zakładce `Klasyfikator`")

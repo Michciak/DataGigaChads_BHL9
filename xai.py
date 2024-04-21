@@ -4,11 +4,14 @@ import data_prep
 import pandas as pd
 from sklearn.model_selection import train_test_split
     
-def build_exp(model_name: str):
+def build_exp(model_name: str, data: pd.DataFrame = None):
 
     xgb = pkl.load(open(model_name, 'rb'))
 
-    data = pd.read_csv("marketing_campaign.csv", sep = ";")
+    if data is None:
+        # only for development purposes
+        data = pd.read_csv("marketing_campaign.csv", sep = ";")
+
     #data["Dt_Customer"] = pd.to_datetime(data["Dt_Customer"]).dt.year
     
     data["Income"] = data["Income"].fillna(data["Income"].median())
