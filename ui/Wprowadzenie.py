@@ -8,6 +8,9 @@ import pandas as pd
 
 st.set_page_config(page_title="Sentiment Analysis", layout="wide")
 
+st.markdown("""W twoich dłoniach znalazło się potężne narzędzie. Pozwoli ci ono przewidzieć skuteczność twojej następnej kampanii marketingowej oraz zrozumieć co miało największy wpływ na wyniki twojej poprzedniej kampanii. 
+            Pamiętaj proszę, że to narzędzie ma cię wesprzeć w podejmowaniu decyzji, a nie zastąpić.""")
+
 with st.spinner("Inicjalizowanie aplikacji..."):
     pass
     # if 'mp' not in st.session_state:

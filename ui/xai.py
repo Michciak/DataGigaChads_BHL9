@@ -41,3 +41,8 @@ def pdp(exp, vars):
 def pdp_cat(exp,vars):
     pdp = exp.model_profile(variable_type = "categorical", variables = vars)
     return pdp.result
+
+def exp_pred(exp, x_test):
+    pred = exp.predict(x_test)
+    result = (pred > 0.5).astype(int)
+    return result
